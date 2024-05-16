@@ -6,6 +6,10 @@ This repository hosts the codebase for an innovative eco-tourism solution aimed 
 ## Project Demo Link:
 https://youtu.be/QvRzrmodhTQ
 
+## Project demo
+https://pixelam.vercel.app/
+This Serverless Function has timed out. error can happen due to the limitations of vercel free plan and the internet
+
 ## Features
 1. **Multilingual Support:** The application supports a variety of local languages, facilitating seamless communication for users from diverse linguistic backgrounds.
 
