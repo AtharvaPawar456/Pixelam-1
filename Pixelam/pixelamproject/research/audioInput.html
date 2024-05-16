@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record and Upload Audio</title>
+    <style>
+        #controls {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <button id="startButton" onclick="startRecording()">Start Recording</button>
+        <button id="stopButton" onclick="stopRecording()" disabled>Stop Recording</button>
+        <button id="uploadButton" onclick="uploadAudio()" disabled>Upload Audio</button>
+    </div>
+    <audio id="audioPlayer" controls></audio>
+
+    <script>
+        let mediaRecorder;
+        let chunks = [];
+
+        function startRecording() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function(stream) {
+                    mediaRecorder = new MediaRecorder(stream);
+
+                    mediaRecorder.ondataavailable = function(event) {
+                        chunks.push(event.data);
+                    }
+
+                    mediaRecorder.onstop = function() {
+                        const audioBlob = new Blob(chunks, { type: 'audio/webm' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        document.getElementById('audioPlayer').src = audioUrl;
+                        document.getElementById('uploadButton').disabled = false;
+                    }
+
+                    mediaRecorder.start();
+                    document.getElementById('startButton').disabled = true;
+                    document.getElementById('stopButton').disabled = false;
+                })
+                .catch(function(error) {
+                    console.error('Error accessing microphone:', error);
+                });
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            document.getElementById('startButton').disabled = false;
+            document.getElementById('stopButton').disabled = true;
+        }
+
+        function uploadAudio() {
+            const audioBlob = new Blob(chunks, { type: 'audio/webm' });
+            const formData = new FormData();
+            formData.append('audio', audioBlob);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Handle response from server
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+    </script>
+</body>
+</html>

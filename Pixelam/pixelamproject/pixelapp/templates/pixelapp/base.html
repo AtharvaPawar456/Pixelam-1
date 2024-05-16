@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    {% load static %}
+
+    <!-- <meta http-equiv="refresh" content="40"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/> -->
+
+
+
+
+    <link rel="icon" type="image/jpg" href="{% static 'pixelapp/setup/images/pixelhr-logo.jpeg' %}">
+    <script src="{% static 'pixelapp\setup\tailwindcss.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <!-- <script src="{% static 'pixelapp\setup\Chart.min.js' %}" charset="utf-8" ></script> -->
+    <!-- <link rel="stylesheet" href="{% static 'pixelapp\setup\Chart.min.css' %}" /> -->
+    
+    <style>
+        .bg-hero-image {
+          background-image: url("{% static 'pixelapp/setup/images/hero.png' %}");
+          background-size: cover;
+          background-position: center;
+        }
+      
+        md-block {
+            white-space: pre-wrap; /* Preserve line breaks */
+            font-family: monospace;
+            overflow-wrap: break-word; /* Enable text wrapping */
+        }
+        
+        @keyframes colorChange {
+            0% {
+                color: rgb(110, 151, 6); /* Pink */
+            }
+            33% {
+                color: rgb(255, 165, 0); /* Orange */
+            }
+            66% {
+                color: rgb(36, 164, 211); /* Dark Yellow */
+            }
+            70% {
+                color: rgb(255, 105, 180); /* Back to Pink */
+            }
+            100% {
+                color: rgb(45, 210, 12); /* Back to Pink */
+            }
+            100% {
+                color: rgb(255, 105, 180); /* Back to Pink */
+            }
+        }
+
+        .color-animation {
+            animation: colorChange 5s linear infinite;
+        }
+    </style>
+
+
+
+    <style>{% block css %} {% endblock %}</style>
+    <title>{% block title %}{% endblock %}</title>
+    <!-- <title>Pixelam . Home</title> -->
+  </head>
+
+
+  <body>
+
+    {% if user.is_authenticated %}
+
+
+
+
+    <!-- Navbar -->
+    <div class="fixed top-0 left-0 right-0 h-12 border grid grid-cols-4 text-center bg-white">
+        <div class="hidden border p-1 text-center text-xl my-1 mx-4 rounded-md shadow hover:bg-indigo-100 hover:border-black">
+            <!-- <i class="fa-solid fa-clock-rotate-left"></i> -->
+        </div>
+        
+        <a href="/dashboard/general/">
+            <div class="text-left p-1 px-4 text-2xl font-bold text-indigo-700 color-animation">
+                Pixelam
+            </div>
+        </a>
+        <div class="text-left p-1 px-4 text-2xl font-bold text-indigo-700">
+            {% block topic %}{% endblock %}
+        </div>
+        <div class=""></div>
+
+        <div class="hidden lg:block">
+            <a href="{% url 'user_logout' %}" class="">
+                <div
+                  class="text-xl py-3 h-12 font-bold text-center text-green-500 hover:text-green-900 hover:bg-green-100"
+                >
+                  <i class="fa-solid fa-user"></i> {{ user.username }}
+                  <i class="fa-solid fa-right-from-bracket ml-2"></i>
+                </div>
+              </a>
+        </div>
+        <div id="menuButton" class="lg:hidden border p-1 text-center text-xl my-1 mx-4 rounded-md shadow hover:bg-indigo-100 hover:border-black">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        
+    </div>
+
+    <!-- Action Area -->
+    <div class="lg:flex mt-[50px]">
+        <!-- Menu List -->
+        <div id="menuItems" class="lg:w-3/12 hidden lg:block h-[480px] lg:h-[580px] overflow-auto pl-2 ">
+            <div class="text-2xl px-2 mt-1">
+                Menu
+                {% comment %} {% if request.session.weblang == "English" %}Menu{% endif %}
+                {% if request.session.weblang == "Yoruba" %}Àtẹ̀jíṣẹ́{% endif %}
+                {% if request.session.weblang == "Fante" %}Mfonyinsɛm{% endif %}
+                {% if request.session.weblang == "Kimeru" %}Menu.{% endif %}
+                <p class="text-base inline font-bold text-indigo-700">(Lang : {{ request.session.weblang }})</p> {% endcomment %}
+        
+                <!-- Menu   -->
+                <div class="inline lg:hidden">
+                    <i class="fa-solid fa-user text-md"></i> {{ user.username | title }}
+                </div>
+            </div>
+            <form action="{% url 'language_selection' %}" method="post" class="pt-1 ml-2">
+                {% csrf_token %}
+                <label for="language" class="text-xs">Select a language:</label>
+                <select name="language" id="language" class="border rounded-md px-8" onchange="this.form.submit()">
+                    <option value="{{ request.session.weblang }}">  -> {{ request.session.weblang }}</option>
+                    
+                    <option value="English">English</option>
+                    <option value="Yoruba">Yoruba</option>
+                    <option value="Fante">Fante</option>
+                    <option value="Kimeru">Kimeru</option>
+                    <option value="Twi">Twi</option>
+                    <option value="Kikuyu">Kikuyu</option>
+                </select>
+            </form>
+
+
+            {% comment %} <div class="hidden p-2 bg-white text-sm mt-2">
+                {% if request.session.weblang == "English" %}
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md select-none"><a href="#"><i class="fa-solid fa-user mr-2"></i>Profile</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/chathistory/"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Chat History</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/traveljournal/"><i class="fa-solid fa-route mr-2"></i>Travel Journal</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/upscale/"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Pic Enhancer</a></div>
+                    
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-map-location-dot mr-2"></i>Nearby Attrcations</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="/dashboard/chathistory/"><i class="fa-solid fa-robot mr-2"></i>ChatBot</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-images mr-2"></i>Gallery</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-image mr-2"></i>Auto Collage Gen</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-vr-cardboard mr-2"></i>AR Guide</a></div>
+                    
+                    <div class="hidden border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-language mr-2"></i>Learn Language</a></div>
+                {% endif %}
+
+                {% if request.session.weblang == "Yoruba" %}
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md select-none"><a href="#"><i class="fa-solid fa-user mr-2"></i>Ìrísí àkọsílẹ̀</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/chathistory/"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Ìtàn Ìtàn Ìtàkùrọ̀sọ</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/traveljournal/"><i class="fa-solid fa-route mr-2"></i>Ìrìnàjò Ẹ̀rọ-ayárabíàṣá</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/upscale/"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Ọ̀pọ̀lọpọ̀ ìfẹsẹ̀wọnsẹ̀ ìfẹsẹ̀wọnsẹ̀ ọlọ́rẹ̀ẹ́jọ̀rẹ́</a></div>
+                    
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-map-location-dot mr-2"></i>Iṣẹ́-àtẹ́lẹ̀ tó wà nítòsí</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="/dashboard/chathistory/"><i class="fa-solid fa-robot mr-2"></i>Ìkànnì ìbánisọ̀rọ̀</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-images mr-2"></i>Gàmì-ayélujára</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-image mr-2"></i>Àkójọpọ̀ Gen</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-vr-cardboard mr-2"></i>Ìtọ́nà AR</a></div>
+                    
+                    <div class="hidden border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-language mr-2"></i>Kẹ́kọ̀ọ́ Èdè</a></div>
+                {% endif %}
+                
+                {% if request.session.weblang == "Fante" %}
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md select-none"><a href="#"><i class="fa-solid fa-user mr-2"></i>Mfonyinpɔn</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/chathistory/"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Nkitahodzi Abakɔsɛm</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/traveljournal/"><i class="fa-solid fa-route mr-2"></i>Akwantu Nsɛm Ho Amandzɛɛbɔ</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/upscale/"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Mpɔmpɔwmunyi a ɔbɔ no ho mbɔdzen</a></div>
+                    
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-map-location-dot mr-2"></i>Apɔwmudzen a ɔbɛn hɔ</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="/dashboard/chathistory/"><i class="fa-solid fa-robot mr-2"></i>Kasa Kyerɛ Nkuranhyɛfo</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-images mr-2"></i>Nsahwɛfo</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-image mr-2"></i>Hɔn a Wɔdze Hɔn Hyehyɛɛ Korabea</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-vr-cardboard mr-2"></i>Hɛn Akwankyerɛ</a></div>
+                    
+                    <div class="hidden border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-language mr-2"></i>Sua Kasa</a></div>
+                {% endif %}
+
+                {% if request.session.weblang == "Kimeru" %}
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md select-none"><a href="#"><i class="fa-solid fa-user mr-2"></i>Profĩle.</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/chathistory/"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Rũgono rwa kwaranĩrĩa.</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/traveljournal/"><i class="fa-solid fa-route mr-2"></i>ĩũkũ rĩa ndĩũnga.</a></div>
+                    <div class="hover:bg-indigo-200 border w-10/12 my-2 p-2 rounded-md"><a href="/dashboard/upscale/"><i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Gũkĩria Pic.</a></div>
+                    
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-map-location-dot mr-2"></i>Akũĩ na marũfũkũ.</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="/dashboard/chathistory/"><i class="fa-solid fa-robot mr-2"></i>Chatbot.</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-images mr-2"></i>Gacũncĩ.</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-image mr-2"></i>Auto Collage Gen</a></div>
+                    <div class="border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-vr-cardboard mr-2"></i>Kũgwatĩthanĩa bwega Gen.</a></div>
+                    
+                    <div class="hidden border w-10/12 my-2 p-2 rounded-md select-none text-gray-400"><a href="#"><i class="fa-solid fa-language mr-2"></i>Thoma lugha.</a></div>
+                {% endif %}
+
+            </div> {% endcomment %}
+
+
+            <div class="p-2 bg-white text-sm mt-4" id="languageLinks">
+                <script>
+                    {% comment %} const language = "{{ request.session.weblang }}"; // Get the language from Django session {% endcomment %}
+                    const language = "English"; // Get the language from Django session
+                    const languageLinks = {
+                        "English": [
+                            {icon: "fa-solid fa-user mr-2", visible: "hover:bg-indigo-200", label: "Profile", href: "#" },
+                            {icon: "fa-solid fa-clock-rotate-left mr-2", visible: "hover:bg-indigo-200", label: "Chat History", href: "/dashboard/chathistory/" },
+                            {icon: "fa-solid fa-route mr-2", visible: "hover:bg-indigo-200", label: "Travel Journal", href: "/dashboard/traveljournal/" },
+                            {icon: "fa-solid fa-wand-magic-sparkles mr-2", visible: "hover:bg-indigo-200", label: "Pic Enhancer", href: "/dashboard/upscale/" },
+                            {icon: "fa-solid fa-map-location-dot mr-2", visible: "hover:bg-indigo-200", label: "Nearby Attractions", href: "/nearbyattractions" },
+                            {icon: "fa-solid fa-images mr-2", visible: "hover:bg-indigo-200", label: "Gallery", href: "/collage" },
+
+                            {icon: "fa-solid fa-robot mr-2", visible: "select-none text-gray-400", label: "ChatBot", href: "/dashboard/chathistory/" },
+                            {icon: "fa-solid fa-image mr-2", visible: "select-none text-gray-400", label: "Auto Collage Gen", href: "#" },
+                            {icon: "fa-solid fa-vr-cardboard mr-2", visible: "select-none text-gray-400", label: "AR Guide", href: "#" },
+                            {icon: "fa-solid fa-language mr-2", visible: "select-none text-gray-400", label: "Learn Language", href: "#" }
+                        ],
+
+                        "Yoruba": [
+                            {icon: "fa-solid fa-user mr-2", visible: "hover:bg-indigo-200", label: "Ìrísí àkọsílẹ̀", href: "#" },
+                            {icon: "fa-solid fa-clock-rotate-left mr-2", visible: "hover:bg-indigo-200", label: "Ìtàn Ìtàn Ìtàkùrọ̀sọ", href: "/dashboard/chathistory/" },
+                            {icon: "fa-solid fa-route mr-2", visible: "hover:bg-indigo-200", label: "Ìrìnàjò Ẹ̀rọ-ayárabíàṣá", href: "/dashboard/traveljournal/" },
+                            {icon: "fa-solid fa-wand-magic-sparkles mr-2", visible: "hover:bg-indigo-200", label: "Ọ̀pọ̀lọpọ̀ ìfẹsẹ̀wọnsẹ̀ ìfẹsẹ̀wọnsẹ̀ ọlọ́rẹ̀ẹ́jọ̀rẹ́", href: "/dashboard/upscale/" },
+
+                            {icon: "fa-solid fa-map-location-dot mr-2", visible: "select-none text-gray-400", label: "Iṣẹ́-àtẹ́lẹ̀ tó wà nítòsí", href: "#" },
+                            {icon: "fa-solid fa-robot mr-2", visible: "select-none text-gray-400", label: "Ìkànnì ìbánisọ̀rọ̀", href: "/dashboard/chathistory/" },
+                            {icon: "fa-solid fa-images mr-2", visible: "select-none text-gray-400", label: "Gàmì-ayélujára", href: "#" },
+                            {icon: "fa-solid fa-image mr-2", visible: "select-none text-gray-400", label: "Àkójọpọ̀ Gen", href: "#" },
+                            {icon: "fa-solid fa-vr-cardboard mr-2", visible: "select-none text-gray-400", label: "Ìtọ́nà AR", href: "#" },
+                            {icon: "fa-solid fa-language mr-2", visible: "select-none text-gray-400", label: "Kẹ́kọ̀ọ́ Èdè", href: "#" }
+                        ],
+                        // Add other languages here
+                    };
+            
+                    const links = languageLinks[language];
+                    if (links) {
+                        const html = links.map(link => `<div class="border w-10/12 my-2 p-2 rounded-md ${link.visible}"><a href="${link.href}"><i class="${link.icon}"></i>${link.label}</a></div>`).join('');
+                        document.getElementById("languageLinks").innerHTML = html;
+                    } else {
+                        console.error("Language not supported");
+                    }
+                </script>
+            </div>
+            
+
+        </div>
+
+
+        <!-- Body max-h-[540px]-->
+        <div id="body" class="lg:w-full mx-1 shadow-inner shadow-indigo-200 border rounded-sm lg:mr-1 p-2 max-h-[540px] overflow-auto" >
+            <div>{% block content %}{% endblock %}</div>
+        </div>
+
+    </div>
+    
+    <!-- Footer -->
+    <!-- <div class="text-center font-bold my-4 text-xl text-indigo-600">
+        <i class="fa-solid fa-copyright mr-2"></i>pixelapp 2024
+    </div> -->
+
+
+    <!-- Bottom Icons Button -->
+    <div class="fixed bottom-0 left-0 right-0 px-1">
+
+        <form action="{% url 'langtrans' %}" method="post" enctype="multipart/form-data" 
+        class="bg-white lg:ml-[306px] lg:w-10/12 px-20" id="myForm">
+ 
+            {% csrf_token %}
+        
+            <div class="py-1">
+                <label for="username" class="hidden mb-2 text-sm font-medium text-white lg:mr-4">Prompt:</label>
+                <input type="text" id="prompt" name="prompt"
+                       class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 w-6/12" placeholder="user prompt ..." required>
+                
+                <label class="bg-gray-100 border border-gray-300 rounded-md border px-2 py-2 ml-1 hover:bg-gray-300 focus:ring-blue-500 focus:border-blue-500">
+                    <i class="fa-solid fa-camera"></i>
+                    <!-- <input type="file" name="file" accept=".png, .jpeg, .jpg, image/*" capture="camera" class="custhidden"> -->
+                    <input type="file" name="image" accept=".png, .jpeg, .jpg">
+                    <!-- <input type="file" name="image" accept=".png, .jpg, .jpeg"> -->
+                </label>
+                    
+    
+                    
+                <input class="hidden" type="text" name="location" id="locationInput" value="">
+                
+                <button type="submit" id="submitButton"
+                    class="inline-block text-white bg-indigo-500 hover:bg-blue-800 rounded-lg text-sm px-10 py-2 text-center mx-4">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+    
+                <button id="loadingButton" disabled type="button" class="hidden ml-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 inline-flex items-center">
+                    <svg aria-hidden="true" role="status" class="inline w-4 h-4 mr-1 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#E5E7EB"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                    </svg>
+                    Loading...
+                </button>
+            </div>
+        </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function(event) {
+            // Show the loading button and hide the submit button
+            document.getElementById('submitButton').classList.add('hidden');
+            document.getElementById('loadingButton').classList.remove('hidden');
+        });
+    </script>
+        
+        
+        <div class="grid grid-cols-5 gap-4 bg-white border-t-4 pt-2">
+            <a href="/dashboard/lang/" class="text-xl text-center border rounded-md py-2 hover:bg-indigo-200"><i class="fa-solid fa-language"></i></a> 
+            <a href="/dashboard/shop/" class="text-xl text-center border rounded-md py-2 hover:bg-indigo-200"><i class="fa-solid fa-store"></i></a>
+            <a href="/dashboard/general/" class="text-xl text-center border rounded-md py-2 hover:bg-indigo-200"><i class="fa-solid fa-camera"></i></a>
+            <a href="/dashboard/medical/" class="text-xl text-center border rounded-md py-2 hover:bg-indigo-200"><i class="fa-solid fa-suitcase-medical"></i></a>
+            <a href="/dashboard/learn/" class="text-xl text-center border rounded-md py-2 hover:bg-indigo-200"><i class="fa-solid fa-book-open"></i></a>
+        </div>
+    </div>  
+
+    <!-- lang translate | market place | Capture | Medical Kit | Learn -->
+
+
+    
+    {% block js %}{% endblock %}
+    <script>
+
+        // Function to toggle the visibility of body element and menu items
+        function toggleVisibility() {
+            var bodyElement = document.getElementById('body');
+            var menuItems = document.getElementById('menuItems');
+
+            if (bodyElement.classList.contains('hidden')) {
+                bodyElement.classList.remove('hidden');
+                menuItems.classList.add('hidden');
+            } else {
+                bodyElement.classList.add('hidden');
+                menuItems.classList.remove('hidden');
+            }
+        }
+
+        // Add event listener to menu button
+        document.getElementById('menuButton').addEventListener('click', function() {
+            toggleVisibility();
+        });
+
+        // Add event listener to body element to hide it when clicked outside the menu
+        /*document.getElementById('body').addEventListener('click', function(event) {
+            if (!event.target.closest('#menuButton')) {
+                var bodyElement = document.getElementById('body');
+                if (!bodyElement.classList.contains('hidden')) {
+                    bodyElement.classList.add('hidden');
+                }
+            }
+        }); */
+
+
+    </script>
+
+
+
+    {% else %}
+
+    <!-- Login -->
+        <div id="loginpage" class="bg-hero-image h-screen">
+            <h2 class="text-2xl text-center py-10 font-bold text-white">Login <i class="fa-solid fa-address-card"></i></h2>
+        
+            <form action="{% url 'user_login' %}" method="post"  class="max-w-sm mx-auto px-2">
+                {% if error_message %}
+                    <p class="text-center border p-2 bg-yellow-200 rounded-md mb-6">{{ error_message|title }}</p>
+                {% endif %}
+                {% csrf_token %}
+        
+                <div class="mb-5">
+                    <label for="username" class="block mb-2 text-sm font-medium text-white">Username:</label>
+                    <input type="text" id="username" name="username"
+                        class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="abc_user" required>
+                </div>
+                
+                
+                <div class="mb-5">
+                    <label for="password" class="block mb-2 text-sm font-medium text-white">Password:</label>
+                    <input type="password" id="password" name="password"
+                        class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="*********" required>
+                </div>
+        
+                <button type="submit" 
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-10 py-2.5 text-center">Login
+                </button>
+        
+                <div class="mt-4 lg:inline" >
+                    <a  id="regpagebtn"
+                    class="text-black border border-blue-500 bg-gray-200 hover:bg-blue-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-full px-10 py-2.5 text-center">Register
+                    </a>
+                </div>
+            </form>
+        </div>
+
+
+    <!-- Register Page -->
+
+    <div id="regpage" class="bg-hero-image text-white h-screen hidden">
+        <h2 class="text-2xl text-center pt-2 pb-4 font-bold ">Register <i class="fa-solid fa-address-card"></i></h2>
+    
+        
+        <form action="{% url 'user_register' %}" method="post" class="max-w-sm mx-auto px-2">
+            {% if error_message %}
+                <p class="text-center border p-2 bg-yellow-200 rounded-md mb-6">{{ error_message|title }}</p>
+            {% endif %}
+            {% csrf_token %}
+    
+            <!-- <label for="username">Username:</label>
+            <input type="text" name="username" required> -->
+    
+            <div class="mb-5">
+                <label for="username" class="block mb-2 text-sm font-medium">Username:</label>
+                <input type="text" id="username" name="username"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="abc_user" value="abc_user" required>
+            </div>
+            
+            
+            <!-- <label for="password">Password:</label>
+            <input type="password" name="password" required> -->
+            
+            <div class="mb-5">
+                <label for="password" class="block mb-2 text-sm font-medium">Password:</label>
+                <input type="password" id="password" name="password"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="***********" value="123" required>
+            </div>
+            
+            
+            <!-- <label for="email">Email:</label>
+            <input type="email" name="email" required> -->
+    
+            <div class="mb-5">
+                <label for="email" class="block mb-2 text-sm font-medium">Email:</label>
+                <input type="email" id="email" name="email"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="test@gmail.com" value="test@gmail.com" required>
+            </div>
+            
+            <div class="mb-5">
+                <label for="phoneno" class="block mb-2 text-sm font-medium">Phone No:</label>
+                <input type="number" id="phoneno" name="phoneno"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="2387612652" value="2387612652" required>
+            </div>
+            
+            <div class="mb-5 hidden">
+                <label for="accountPack" class="block mb-2 text-sm font-medium">accountPack:</label>
+                <input type="text" id="accountPack" name="accountPack"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="free" required>
+            </div>
+            
+            <button type="submit" 
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-10 py-2.5 text-center">Register
+            </button>
+    
+            
+            <div class="mt-4 lg:inline" >
+                <a id="loginpagebtn" 
+                    class="text-black border border-blue-500 bg-white hover:bg-blue-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-10 py-2.5 text-center">Login
+                </a>
+            </div>
+    
+        </form>
+    
+    </div>
+
+    {% endif %}
+
+
+
+    <script>
+        // Get the element representing the body
+        var body = document.getElementById('body');
+    
+        // Set the scroll position to the bottom
+        body.scrollTop = body.scrollHeight;
+    </script>
+
+
+    <script>
+        document.getElementById('regpagebtn').addEventListener('click', function () {
+            document.getElementById('loginpage').classList.add('hidden');
+            document.getElementById('regpage').classList.remove('hidden');
+        });
+    
+        document.getElementById('loginpagebtn').addEventListener('click', function () {
+            document.getElementById('regpage').classList.add('hidden');
+            document.getElementById('loginpage').classList.remove('hidden');
+        });
+
+    </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,58 @@
+{% extends 'pixelapp/base.html' %} {% block title %}Pixelam | Collage{% endblock %}
+{% block topic %}{{ serviceType | title }}{% endblock %}
+
+<div>{% block content %} {% load static %}</div>
+{% block css %}
+<style></style>
+{% endblock %}
+
+
+
+<div class="pb-[120px]">
+    {% if collageimg != "none"%}
+        <div class="grid grid-cols-2 gap-4 border my-4 shadow-md mb-10">
+
+            <div class="text-center text-2xl font-bold font-mono py-24">
+                Your Collage Pic...
+            </div>
+            <div class="py-2">
+                <img 
+                class="h-60 mx-auto rounded-md shadow-md " 
+                src="data:image/jpeg;base64,{{ collageimg }}" 
+                alt="collageimg-userimg">
+            </div>
+            
+        </div>
+        
+    {% else %}<div class="hidden"></div>{% endif %}
+
+
+    <div class="text-center text-2xl font-bold text-indigo-600 my-4">All Your Captured Pics !!!</div>
+    <div class="grid grid-cols-3 gap-4">
+    {% for itembase64 in allbase64 %}
+            {% if itembase64 != "none"%}
+
+            <div class="border px-2 border rounded-md shadow-xl py-4">
+                
+                <img class="h-60 mx-auto rounded-md shadow-md" 
+                src="data:image/jpeg;base64,{{ itembase64 }}" 
+                alt="all-userimg">
+                
+                <a href="data:image/jpeg;base64,{{ itembase64 }}" 
+                download="downloaded_image.jpeg" 
+                class="p-1 hover:text-black mx-24">
+                <i class="fa-solid fa-download mr-2 text-center"></i>Download Image !!!
+                </a>
+
+            </div>
+
+            {% else %}{% endif %}
+            
+            
+    {% endfor %}
+    </div>
+
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Color Change</title>
+    <style>
+        @keyframes colorChange {
+            0% {
+                color: rgb(110, 151, 6); /* Pink */
+            }
+            33% {
+                color: rgb(255, 165, 0); /* Orange */
+            }
+            66% {
+                color: rgb(36, 164, 211); /* Dark Yellow */
+            }
+            70% {
+                color: rgb(255, 105, 180); /* Back to Pink */
+            }
+            100% {
+                color: rgb(45, 210, 12); /* Back to Pink */
+            }
+            100% {
+                color: rgb(255, 105, 180); /* Back to Pink */
+            }
+        }
+
+        .color-animation {
+            animation: colorChange 5s linear infinite;
+        }
+    </style>
+</head>
+<body>
+
+<h1 class="text-left p-1 px-4 text-2xl font-bold text-indigo-700 color-animation">
+    {% block topic %}{% endblock %}
+</h1>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+
+
+
+
+
+
+
+help me to create a dataset
+json list
+format :
+placename, imglink, whatsspecial(list of keywords only)
+
+
+tourdata = {
+    "nigeria": [
+            {
+                "placename": "Confluence of the Niger and Benue Rivers (Lokoja)",
+                "imglink": "pixelapp/websiteData/nigeria/river.jpeg",
+                "whatsspecial": ["majestic", "meeting point", "important rivers"]
+            },
+            {
+                "placename": "Mount Patti (Lokoja)",
+                "imglink": "pixelapp/websiteData/nigeria/mountpatti.jpeg",
+                "whatsspecial": ["breathtaking views", "hiking", "guided tours available"]
+            },
+            {
+                "placename": "Wada Dam (near Lokoja)",
+                "imglink": "pixelapp/websiteData/nigeria/dam.jpeg",
+                "whatsspecial": ["serene artificial lake", "boat rides", "picnics"]
+            },
+            {
+                "placename": "Kogi State University (Anyigba)",
+                "imglink": "pixelapp/websiteData/nigeria/university.jpeg",
+                "whatsspecial": ["vibrant campus", "local football matches"]
+            },
+            {
+                "placename": "Local Cuisine",
+                "imglink": "pixelapp/websiteData/nigeria/food-dish.jpeg",
+                "whatsspecial": ["authentic local dish"]
+            }
+        ]
+    }
+
+
+
+Yoruba
+
+Traveljournal : Ìrìnàjò Ẹ̀rọ-ayárabíàṣá
+
+Select a language: Yan èdè kan 
+
+English
+
+Save : Fipamọ́
+
+Menu : Àtẹ̀jíṣẹ́
+
+Chat History : Ìtàn Ìtàn Ìtàkùrọ̀sọ
+
+Pic Enhancer : Ọ̀pọ̀lọpọ̀ ìfẹsẹ̀wọnsẹ̀ ìfẹsẹ̀wọnsẹ̀ ọlọ́rẹ̀ẹ́jọ̀rẹ́

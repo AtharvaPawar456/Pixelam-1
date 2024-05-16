@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Speech</title>
+</head>
+<body>
+    <button onclick="speakText()">Speak</button>
+    <script>
+        var text2speech = "hello world, this is GTA";
+
+        function speakText() {
+            var speechSynthesis = window.speechSynthesis;
+            var speechText = new SpeechSynthesisUtterance(text2speech);
+            speechSynthesis.speak(speechText);
+        }
+    </script>
+</body>
+</html>

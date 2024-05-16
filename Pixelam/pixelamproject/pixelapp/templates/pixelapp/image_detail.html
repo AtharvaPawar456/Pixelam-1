@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Detail</title>
+</head>
+<body>
+    <h1>Image Detail</h1>
+    <h2>{{ instance.name }}</h2>
+    <img src="data:image/jpeg;base64,{{ instance.image_data }}" alt="{{ instance.name }}">
+    <p>{{ instance.image_data }}</p>
+</body>
+</html>
